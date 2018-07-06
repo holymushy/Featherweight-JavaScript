@@ -32,9 +32,10 @@ public class Environment {
     public Value resolveVar(String varName) {
     	if (env.containsKey(varName)){
     		return env.get(varName);
-    	}else {
+    	}else if(outerEnv != null) {
     		return outerEnv.resolveVar(varName);
-    	}
+    	}else
+    		return new NullVal();
     }
 
     /**
@@ -44,8 +45,11 @@ public class Environment {
      */
     public void updateVar(String key, Value v) {
     	if (env.containsKey(key)){
-    		
-    	}
+    		env.put(key, v);
+    	}else if (outerEnv != null) {
+    		outerEnv.updateVar(key, v);
+    	}else
+    		env.put(key, v);
     }
 
     /**
