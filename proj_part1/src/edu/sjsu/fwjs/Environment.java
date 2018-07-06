@@ -31,7 +31,7 @@ public class Environment {
      */
     public Value resolveVar(String varName) {
     	if (env.containsKey(varName)){
-    		
+    		return env.get(varName);
     	}
 		return null;
     }
