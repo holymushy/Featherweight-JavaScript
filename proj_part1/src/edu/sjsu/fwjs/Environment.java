@@ -30,12 +30,14 @@ public class Environment {
      * null is returned (similar to how JS returns undefined.
      */
     public Value resolveVar(String varName) {
+    	Value v;
     	if (env.containsKey(varName)){
-    		return env.get(varName);
-    	}else if(outerEnv != null) {
-    		return outerEnv.resolveVar(varName);
+    		v = env.get(varName);
+    	}else if (outerEnv != null) {
+    		v = outerEnv.resolveVar(varName);
     	}else
-    		return new NullVal();
+    		v = new NullVal();
+    	return v;
     }
 
     /**
