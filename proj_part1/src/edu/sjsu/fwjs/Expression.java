@@ -3,6 +3,8 @@ package edu.sjsu.fwjs;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 /**
  * FWJS expressions.
  */
@@ -72,8 +74,24 @@ class BinOpExpr implements Expression {
 
     @SuppressWarnings("incomplete-switch")
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+        Value v1 = e1.evaluate(env);
+        Value v2 = e2.evaluate(env);
+        int x = ((IntVal)v1).toInt();
+        int y = ((IntVal)v2).toInt();
+        switch (op) {
+		case ADD: return new IntVal(x+y);
+		case SUBTRACT: return new IntVal(x-y);
+		case MULTIPLY: return new IntVal(x*y);	
+		case DIVIDE: return new IntVal(x/y);	
+		case MOD: return new IntVal(x%y);	
+		case GT: return new BoolVal(x>y);	
+		case GE: return new BoolVal(x>=y);	
+		case LT: return new BoolVal(x<y);	
+		case LE: return new BoolVal(x<=y);	
+		case EQ: return new BoolVal(x==y);
+		default:
+			 throw new RuntimeException("Wrong operator");
+		}
     }
 }
 
