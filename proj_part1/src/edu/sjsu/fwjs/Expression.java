@@ -1,9 +1,9 @@
 package edu.sjsu.fwjs;
 
+ipackage edu.sjsu.fwjs;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.management.RuntimeErrorException;
 
 /**
  * FWJS expressions.
@@ -74,24 +74,36 @@ class BinOpExpr implements Expression {
 
     @SuppressWarnings("incomplete-switch")
     public Value evaluate(Environment env) {
-        Value v1 = e1.evaluate(env);
-        Value v2 = e2.evaluate(env);
-        int x = ((IntVal)v1).toInt();
-        int y = ((IntVal)v2).toInt();
-        switch (op) {
-		case ADD: return new IntVal(x+y);
-		case SUBTRACT: return new IntVal(x-y);
-		case MULTIPLY: return new IntVal(x*y);	
-		case DIVIDE: return new IntVal(x/y);	
-		case MOD: return new IntVal(x%y);	
-		case GT: return new BoolVal(x>y);	
-		case GE: return new BoolVal(x>=y);	
-		case LT: return new BoolVal(x<y);	
-		case LE: return new BoolVal(x<=y);	
-		case EQ: return new BoolVal(x==y);
-		default:
-			 throw new RuntimeException("Wrong operator");
-		}
+        // YOUR CODE HERE
+    	Value v1 = e1.evaluate(env), v2 = e2.evaluate(env);
+    	int x, y;
+    	if((new IntVal(0)).getClass().equals(v1.getClass()) && (new IntVal(0)).getClass().equals(v2.getClass())) {
+    		x = ((IntVal)v1).toInt();
+    		y = ((IntVal)v2).toInt();
+    	}else {
+    		return null;
+    	}
+        if(op.equals(Op.ADD)) {
+        	return new IntVal(x + y);
+        }else if(op.equals(Op.DIVIDE)) {
+        	return new IntVal(x / y);
+        }else if(op.equals(Op.EQ)) {
+        	return new BoolVal(x == y);
+        }else if(op.equals(Op.GE)) {
+        	return new BoolVal(x >= y);
+        }else if(op.equals(Op.GT)) {
+        	return new BoolVal(x > y);
+        }else if(op.equals(Op.LE)) {
+        	return new BoolVal(x <= y);
+        }else if(op.equals(Op.LT)) {
+        	return new BoolVal(x < y);
+        }else if(op.equals(Op.MOD)) {
+        	return new IntVal(x % y);
+        }else if(op.equals(Op.MULTIPLY)) {
+        	return new IntVal(x * y);
+        }else if(op.equals(Op.SUBTRACT)) {
+        	return new IntVal(x - y);
+        }else {return null;}
     }
 }
 
@@ -109,7 +121,17 @@ class IfExpr implements Expression {
         this.els = els;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
+        if(cond == null) {
+        	return null;
+        }
+        Value v = cond.evaluate(env);
+        if((new BoolVal(false)).getClass().equals(v.getClass())) {
+        	if(((BoolVal)v).toBoolean()) {
+        		return thn.evaluate(env);
+        	}else {
+        		return els.evaluate(env);
+        	}
+        }
         return null;
     }
 }
@@ -125,8 +147,22 @@ class WhileExpr implements Expression {
         this.body = body;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+    	if(null == cond) {
+    		return null;
+    	}
+        Value bool = cond.evaluate(env);
+        if((new BoolVal(false)).getClass().equals(bool.getClass())) {
+	        while(((BoolVal)bool).toBoolean()) {
+	        	if(body != null) {
+	        		body.evaluate(env);
+	        	}else {
+	        		return null;
+	        	}
+	        }
+        }else {
+        	return null;
+        }
+        return bool;
     }
 }
 
@@ -141,8 +177,14 @@ class SeqExpr implements Expression {
         this.e2 = e2;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+        if(e1 == null) {
+        	return null;
+        }
+        e1.evaluate(env);
+        if(e2 == null) {
+        	return null;
+        }
+        return e2.evaluate(env);
     }
 }
 
@@ -211,4 +253,3 @@ class FunctionAppExpr implements Expression {
         return null;
     }
 }
-
