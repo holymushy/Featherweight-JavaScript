@@ -149,22 +149,17 @@ class WhileExpr implements Expression {
         this.body = body;
     }
     public Value evaluate(Environment env) {
-    	if(null == cond) {
-    		return null;
-    	}
-        Value bool = cond.evaluate(env);
-        if((bool instanceof BoolVal) && ((BoolVal) bool).toBoolean()) {
-            if (body != null) {
+        while(true) {
+            Value v;
+            v = cond.evaluate(env);
+            if(!(v instanceof BoolVal))
+                throw new RuntimeException("While condition did not evaluate to a boolean");
+            else if (((BoolVal)v).toBoolean()){
                 body.evaluate(env);
-                this.evaluate(env);
             } else {
-                return null;
+                return new NullVal();
             }
-        } else {
-            return null;
         }
-
-        return null;
     }
 }
 
@@ -272,6 +267,6 @@ class FunctionAppExpr implements Expression {
             throw new RuntimeErrorException(e, "The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.")
         }
         
-        return func.apply(args);
+        return func.apply(argvals);
     }
 }
