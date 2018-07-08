@@ -70,7 +70,7 @@ public class Environment {
     		return null;
     	}
     	if(scope.env==null || !(scope.env.containsKey(var))) {
-    		search(var, scope.outerEnv);
+    		return search(var, scope.outerEnv);
     	}else {
     		return scope;
     	}
