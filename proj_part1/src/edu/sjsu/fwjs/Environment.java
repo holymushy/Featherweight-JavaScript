@@ -2,8 +2,6 @@ package edu.sjsu.fwjs;
 
 import java.util.Map;
 
-import javax.management.RuntimeErrorException;
-
 import java.util.HashMap;
 
 public class Environment {
@@ -43,25 +41,25 @@ public class Environment {
 	 * If a variable has not been defined previously in the current scope,
 	 * or any of the function's outer scopes, the var is stored in the global scope.
 	 */
-    public void updateVar(String key, Value v) {
-    	if (env.containsKey(key)){
-    		env.put(key, v);
+    public void updateVar(String varName, Value v) {
+    	if (env.containsKey(varName)){
+    		env.put(varName, v);
     	}else if (outerEnv != null) {
-    		outerEnv.updateVar(key, v);
+    		outerEnv.updateVar(varName, v);
     	}else
-    		env.put(key, v);
+    		env.put(varName, v);
     }
-
-	/**
-	 * Creates a new variable in the local scope.
-	 * If the variable has been defined in the current scope previously,
-	 * a RuntimeException is thrown.
-	 */
-    public void createVar(String key, Value v) {
-    	if(env.containsKey(key)) {
-    		throw new RuntimeException("Previous Define Variable");
-    	}else {
-        	env.put(key, v);
-    	}
+ 
+    /**
+     * Creates a new variable in the local scope.
+     * If the variable has been defined in the current scope previously,
+     * a RuntimeException is thrown.
+     */
+    public void createVar(String varName, Value v) throws RuntimeException {
+        if(!env.containsKey(varName)) {
+            env.put(varName, v);
+        } else {
+            throw new RuntimeException("Variable '" + varName + "' has already been defined in this scope.");
+        }
     }
 }

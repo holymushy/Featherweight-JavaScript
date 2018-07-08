@@ -1,6 +1,7 @@
 package edu.sjsu.fwjs;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -181,8 +182,11 @@ class VarDeclExpr implements Expression {
 	public Value evaluate(Environment env) {
 		if(exp == null) return new NullVal();		
 		Value v = new NullVal();
-		try {v = exp.evaluate(env);}
-		catch(RuntimeException e) {System.out.print(e.toString());}
+		try {
+			v = exp.evaluate(env);
+		}catch(RuntimeException e) {
+			System.out.print(e.toString());
+		}
 		env.createVar(varName, v);
 		return v;
 	}
@@ -227,22 +231,22 @@ class FunctionDeclExpr implements Expression {
  * Function application.
  */
 class FunctionAppExpr implements Expression {
-	private Expression f;
-	private List<Expression> args;
-	public FunctionAppExpr(Expression f, List<Expression> args) {
-		this.f = f;
-		this.args = args;
-	}
-	public Value evaluate(Environment env) {
-		List<Value> argvals = (List<Value>) args.stream().map(arg -> arg.evaluate(env));
-		Value maybeFunc = f.evaluate(env);
-		ClosureVal func;
-		try {
-			func = (ClosureVal) maybeFunc;
-		} catch (ClassCastException e) {
-			throw new RuntimeException("The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.");
-		}
-
-		return func.apply(argvals);
-	}
+    private Expression f;
+    private List<Expression> args;
+    public FunctionAppExpr(Expression f, List<Expression> args) {
+        this.f = f;
+        this.args = args;
+    }
+    public Value evaluate(Environment env) {
+        List<Value> argvals = args.stream().map(arg -> arg.evaluate(env)).collect(Collectors.toList());
+        Value maybeFunc = f.evaluate(env);
+        ClosureVal func;
+        try {
+            func = (ClosureVal) maybeFunc;
+        } catch (ClassCastException e) {
+            throw new RuntimeException("The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.");
+        }
+        
+        return func.apply(argvals);
+    }
 }
