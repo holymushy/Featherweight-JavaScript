@@ -153,7 +153,7 @@ class WhileExpr implements Expression {
     		return null;
     	}
         Value bool = cond.evaluate(env);
-        if((bool instanceof BoolVal) && BoolVal(bool).toBoolean()) {
+        if((bool instanceof BoolVal) && ((BoolVal) bool).toBoolean()) {
             if (body != null) {
                 body.evaluate(env);
                 this.evaluate(env);
@@ -263,6 +263,7 @@ class FunctionAppExpr implements Expression {
         this.args = args;
     }
     public Value evaluate(Environment env) {
+        List<Value> argvals = args.stream().map(arg -> arg.evaluate(env));
         Value maybeFunc = f.evaluate(env);
         ClosureVal func;
         try {
