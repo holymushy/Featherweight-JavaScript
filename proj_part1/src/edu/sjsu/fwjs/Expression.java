@@ -1,7 +1,5 @@
 package edu.sjsu.fwjs;
 
-ipackage edu.sjsu.fwjs;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,18 +121,12 @@ class IfExpr implements Expression {
         this.els = els;
     }
     public Value evaluate(Environment env) {
-        if(cond == null) {
-        	return null;
-        }
-        Value v = cond.evaluate(env);
-        if((new BoolVal(false)).getClass().equals(v.getClass())) {
-        	if(((BoolVal)v).toBoolean()) {
-        		return thn.evaluate(env);
-        	}else {
-        		return els.evaluate(env);
-        	}
-        }
-        return null;
+    	Value v = cond.evaluate(env);
+    	if(!(v instanceof BoolVal))
+    		throw new RuntimeException("Condition is not an instance of BoolVal");
+    	else if (((BoolVal)v).toBoolean())
+    		return thn.evaluate(env);
+    	else return els.evaluate(env);
     }
 }
 
@@ -199,7 +191,7 @@ class VarDeclExpr implements Expression {
     	if(exp == null) {
     		return null;
     	}
-    	Value v;
+    	Value v = null;
     	try {
 	    	v = exp.evaluate(env);
     	}catch(RuntimeException e) {
@@ -258,13 +250,13 @@ class FunctionAppExpr implements Expression {
         this.args = args;
     }
     public Value evaluate(Environment env) {
-        List<Value> argvals = args.stream().map(arg -> arg.evaluate(env));
+        List<Value> argvals = (List<Value>) args.stream().map(arg -> arg.evaluate(env));
         Value maybeFunc = f.evaluate(env);
         ClosureVal func;
         try {
             func = (ClosureVal) maybeFunc;
         } catch (ClassCastException e) {
-            throw new RuntimeErrorException(e, "The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.")
+            throw new RuntimeException("The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.");
         }
         
         return func.apply(argvals);
