@@ -32,7 +32,7 @@ public class Environment {
     public Value resolveVar(String varName) {
         Environment scope = search(varName, this);
         if(scope == null)
-        	return null;
+        	return new NullVal();
         return scope.env.get(varName);
     }
  
@@ -65,6 +65,11 @@ public class Environment {
         }
     }
     
+    /**
+     * Searches nested scopes for a given var name, moving upward
+     * from local scope. If the var isn't found anywhere, returns
+     * null.
+     */
     private Environment search(String var, Environment scope) {
     	if(scope == null) {
     		return null;
