@@ -1,7 +1,5 @@
 package edu.sjsu.fwjs;
 
-ipackage edu.sjsu.fwjs;
-
 import java.util.ArrayList;
 import java.util.List;
 
