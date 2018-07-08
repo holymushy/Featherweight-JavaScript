@@ -228,8 +228,12 @@ class AssignExpr implements Expression {
         this.e = e;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+    	if(e == null) {
+    		return null;
+    	}
+    	Value v = e.evaluate(env);
+        env.updateVar(varName, v);
+        return v;
     }
 }
 
