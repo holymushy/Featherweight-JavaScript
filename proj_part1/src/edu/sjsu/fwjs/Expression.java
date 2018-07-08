@@ -153,18 +153,18 @@ class WhileExpr implements Expression {
     		return null;
     	}
         Value bool = cond.evaluate(env);
-        if((new BoolVal(false)).getClass().equals(bool.getClass())) {
-	        while(((BoolVal)bool).toBoolean()) {
-	        	if(body != null) {
-	        		body.evaluate(env);
-	        	}else {
-	        		return null;
-	        	}
-	        }
-        }else {
-        	return null;
+        if((bool instanceof BoolVal) && BoolVal(bool).toBoolean()) {
+            if (body != null) {
+                body.evaluate(env);
+                this.evaluate(env);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
-        return bool;
+
+        return null;
     }
 }
 
