@@ -30,19 +30,12 @@ public class Environment {
 	 * null is returned (similar to how JS returns undefined.
 	 */
     public Value resolveVar(String varName) {
-<<<<<<< HEAD
     	if (env.containsKey(varName)){
     		return env.get(varName);
     	}else if(outerEnv != null) {
     		return outerEnv.resolveVar(varName);
     	}else
     		return new NullVal();
-=======
-        Environment scope = search(varName, this);
-        if(scope == null)
-        	return new NullVal();
-        return scope.env.get(varName);
->>>>>>> branch 'master' of https://github.com/holymushy/Featherweight-JavaScript.git
     }
 
 	/**
@@ -58,7 +51,6 @@ public class Environment {
     	}else
     		env.put(key, v);
     }
-<<<<<<< HEAD
 
 	/**
 	 * Creates a new variable in the local scope.
@@ -68,34 +60,6 @@ public class Environment {
     public void createVar(String key, Value v) {
     	if(env.containsKey(key)) {
     		throw new RuntimeException("Previous Define Variable");
-=======
- 
-    /**
-     * Creates a new variable in the local scope.
-     * If the variable has been defined in the current scope previously,
-     * a RuntimeException is thrown.
-     */
-    public void createVar(String key, Value v) throws RuntimeException {
-    	Environment scope = search(key, this);
-        if(scope.env.containsKey(key)) {
-            throw new RuntimeException("Previous Define Variable");
-        }else {
-            env.put(key, v);
-        }
-    }
-    
-    /**
-     * Searches nested scopes for a given var name, moving upward
-     * from local scope. If the var isn't found anywhere, returns
-     * null.
-     */
-    private Environment search(String var, Environment scope) {
-    	if(scope == null) {
-    		return null;
-    	}
-    	if(scope.env==null || !(scope.env.containsKey(var))) {
-    		return search(var, scope.outerEnv);
->>>>>>> branch 'master' of https://github.com/holymushy/Featherweight-JavaScript.git
     	}else {
         	env.put(key, v);
     	}
