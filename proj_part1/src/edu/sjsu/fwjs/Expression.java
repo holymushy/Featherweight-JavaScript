@@ -5,6 +5,8 @@ ipackage edu.sjsu.fwjs;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 /**
  * FWJS expressions.
  */
@@ -233,8 +235,7 @@ class FunctionDeclExpr implements Expression {
         this.body = body;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+        return new ClosureVal(params, body, env);
     }
 }
 
@@ -249,7 +250,14 @@ class FunctionAppExpr implements Expression {
         this.args = args;
     }
     public Value evaluate(Environment env) {
-        // YOUR CODE HERE
-        return null;
+        Value maybeFunc = f.evaluate(env);
+        ClosureVal func;
+        try {
+            func = (ClosureVal) maybeFunc;
+        } catch (ClassCastException e) {
+            throw new RuntimeErrorException(e, "The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.")
+        }
+        
+        return func.apply(args);
     }
 }
