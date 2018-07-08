@@ -250,6 +250,7 @@ class FunctionAppExpr implements Expression {
         this.args = args;
     }
     public Value evaluate(Environment env) {
+    	// needs fixing part
         List<Value> argvals = (List<Value>) args.stream().map(arg -> arg.evaluate(env));
         Value maybeFunc = f.evaluate(env);
         ClosureVal func;
