@@ -13,7 +13,7 @@ Professor
 Class
 	CS 152 Programming Paradign
 
-Part 1 Summary
+Part 1 Summary s
 
 Part 2 Summary
 
