@@ -29,5 +29,3 @@ clean:
 
 spotless: clean
 	-rm ${ZIP_FILE}
-
-
