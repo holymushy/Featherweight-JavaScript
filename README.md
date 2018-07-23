@@ -12,3 +12,5 @@ Professor
 	Thomas Austin
 Class
 	CS 152 Programming Paradign
+
+Part 1 Summary
