@@ -57,11 +57,14 @@ expr:
 	| expr op = ('+' | '-') expr														# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr				# Comparisons
 	| FUNCTION IDENTIFIER '(' IDENTIFIER ')' '{' block '}'	# functionDeclaration
-	| IDENTIFIER '(' expr ',' expr ')'											# functionApplication
+	| FUNCTION '(' IDENTIFIER ')' '{' block '}'							# anonFunctionDeclation
+	| IDENTIFIER '(' args ')'																# functionCall
 	| VAR IDENTIFIER '=' expr																# variableDeclaration
 	| IDENTIFIER '=' expr																		# assignmentStatement
 	| IDENTIFIER																						# variableReference
 	;
+
+args:	expr (',' expr)*;
 
 block: '{' stat* '}' # fullBlock | stat # simpBlock;
 
