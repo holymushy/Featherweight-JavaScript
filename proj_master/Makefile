@@ -30,6 +30,11 @@ generate: ${GRAMMAR}
 	mkdir -p ${GEN_SRC_DIR}
 	java -jar ${ANTLR_JAR} -no-listener -visitor ${GRAMMAR} -o ${GEN_SRC_DIR}
 
+antlr:
+	mkdir -p ${GEN_SRC_DIR}
+	java -jar ${ANTLR_JAR} -no-listener -visitor -o ${GEN_SRC_DIR} ./${GRAMMAR}
+	javac -d ./bin/ ./${GEN_SRC_DIR}/${GRAMMAR_NAME}*.java
+
 parse:
 	mkdir -p ${TREES_DIR}
 	$(foreach script, ${SCRIPTS}, java -cp ${BUILD_DIR}:${ANTLR_JAR} org.antlr.v4.runtime.misc.TestRig \

@@ -41,25 +41,27 @@ WS: [ \t]+ -> skip; // ignore whitespace
 prog: stat+;
 
 stat:
-	expr SEPARATOR						# bareExpr
-	| IF '(' expr ')' block ELSE block	# ifThenElse
-	| IF '(' expr ')' block				# ifThen
-	| WHILE '(' expr ')' block			# while
-	| PRINT '(' expr ')' block			# print;
+	expr SEPARATOR											# bareExpr
+	| IF '(' expr ')' block ELSE block 	# ifThenElse
+	| IF '(' expr ')' block 						# ifThen
+	| WHILE '(' expr ')' block					# while
+	| PRINT '(' expr ')' SEPARATOR			# print
+	;
 
 expr:
-	expr op = ('*' | '/' | '%') expr					# MulDivMod
-	| expr op = ('+' | '-') expr						# AddSub
-	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons
-	| '(' expr ')'										# parens
-	| FUNCTION '(' IDENTIFIER ')' '{' block '}'			# functionDeclaration
-	| 'f' '(' expr ',' expr ')'							# functionApplication
-	| VAR IDENTIFIER '=' expr							# variableDeclaration
-	| expr												# variableReference
-	| IDENTIFIER '=' expr								# assignmentStatement
-	| INT												# int
-	| BOOL												# boolean
-	| NULL												# null;
+	INT																											# int
+	| BOOL																									# boolean
+	| NULL																									# null
+	| '(' expr ')'																					# parens
+	| expr op = ('*' | '/' | '%') expr											# MulDivMod
+	| expr op = ('+' | '-') expr														# AddSub
+	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr				# Comparisons
+	| FUNCTION IDENTIFIER '(' IDENTIFIER ')' '{' block '}'	# functionDeclaration
+	| IDENTIFIER '(' expr ',' expr ')'											# functionApplication
+	| VAR IDENTIFIER '=' expr																# variableDeclaration
+	| IDENTIFIER '=' expr																		# assignmentStatement
+	| IDENTIFIER																						# variableReference
+	;
 
 block: '{' stat* '}' # fullBlock | stat # simpBlock;
 
