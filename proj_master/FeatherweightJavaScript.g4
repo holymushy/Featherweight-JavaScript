@@ -46,6 +46,7 @@ stat:
 	| IF '(' expr ')' block 						# ifThen
 	| WHILE '(' expr ')' block					# while
 	| PRINT '(' expr ')' SEPARATOR			# print
+	| SEPARATOR													# blankExpr
 	;
 
 expr:
@@ -56,12 +57,12 @@ expr:
 	| expr op = ('*' | '/' | '%') expr											# MulDivMod
 	| expr op = ('+' | '-') expr														# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr				# Comparisons
-	| FUNCTION IDENTIFIER '(' IDENTIFIER ')' '{' block '}'	# functionDeclaration
-	| FUNCTION '(' IDENTIFIER ')' '{' block '}'							# anonFunctionDeclation
+	| FUNCTION IDENTIFIER '(' IDENTIFIER (',' IDENTIFIER)* ')' '{' block '}'	# functionDeclaration
+	| FUNCTION '(' IDENTIFIER (',' IDENTIFIER)* ')' '{' block '}'							# anonFunctionDeclation
 	| IDENTIFIER '(' args ')'																# functionCall
+	| IDENTIFIER																						# variableReference
 	| VAR IDENTIFIER '=' expr																# variableDeclaration
 	| IDENTIFIER '=' expr																		# assignmentStatement
-	| IDENTIFIER																						# variableReference
 	;
 
 args:	expr (',' expr)*;
