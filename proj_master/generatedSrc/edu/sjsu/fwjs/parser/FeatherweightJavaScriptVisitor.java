@@ -52,6 +52,13 @@ public interface FeatherweightJavaScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint(FeatherweightJavaScriptParser.PrintContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code blankExpr}
+	 * labeled alternative in {@link FeatherweightJavaScriptParser#stat}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlankExpr(FeatherweightJavaScriptParser.BlankExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code parens}
 	 * labeled alternative in {@link FeatherweightJavaScriptParser#expr}.
 	 * @param ctx the parse tree
@@ -143,11 +150,17 @@ public interface FeatherweightJavaScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunctionDeclaration(FeatherweightJavaScriptParser.FunctionDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link FeatherweightJavaScriptParser#args}.
+	 * Visit a parse tree produced by {@link FeatherweightJavaScriptParser#arglist}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitArgs(FeatherweightJavaScriptParser.ArgsContext ctx);
+	T visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link FeatherweightJavaScriptParser#idlist}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdlist(FeatherweightJavaScriptParser.IdlistContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code fullBlock}
 	 * labeled alternative in {@link FeatherweightJavaScriptParser#block}.

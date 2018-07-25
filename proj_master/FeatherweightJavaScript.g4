@@ -50,22 +50,24 @@ stat:
 	;
 
 expr:
-	INT																											# int
-	| BOOL																									# boolean
-	| NULL																									# null
-	| '(' expr ')'																					# parens
-	| expr op = ('*' | '/' | '%') expr											# MulDivMod
-	| expr op = ('+' | '-') expr														# AddSub
-	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr				# Comparisons
-	| FUNCTION IDENTIFIER '(' IDENTIFIER (',' IDENTIFIER)* ')' '{' block '}'	# functionDeclaration
-	| FUNCTION '(' IDENTIFIER (',' IDENTIFIER)* ')' '{' block '}'							# anonFunctionDeclation
-	| IDENTIFIER '(' args ')'																# functionCall
-	| IDENTIFIER																						# variableReference
-	| VAR IDENTIFIER '=' expr																# variableDeclaration
-	| IDENTIFIER '=' expr																		# assignmentStatement
+	INT																									# int
+	| BOOL																							# boolean
+	| NULL																							# null
+	| '(' expr ')'																			# parens
+	| expr op = ('*' | '/' | '%') expr									# MulDivMod
+	| expr op = ('+' | '-') expr												# AddSub
+	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr		# Comparisons
+	| FUNCTION IDENTIFIER '(' idlist? ')' block # functionDeclaration
+	| FUNCTION '(' idlist? ')' block						# anonFunctionDeclation
+	| IDENTIFIER '(' arglist? ')'												# functionCall
+	| IDENTIFIER																				# variableReference
+	| VAR IDENTIFIER '=' expr														# variableDeclaration
+	| IDENTIFIER '=' expr																# assignmentStatement
 	;
 
-args:	expr (',' expr)*;
+arglist:	expr (',' expr)*;
+
+idlist: IDENTIFIER (',' IDENTIFIER)*;
 
 block: '{' stat* '}' # fullBlock | stat # simpBlock;
 
