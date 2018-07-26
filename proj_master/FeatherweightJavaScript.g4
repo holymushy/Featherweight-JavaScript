@@ -50,9 +50,6 @@ stat:
 	;
 
 expr:
-	INT																									# int
-	| BOOL																							# boolean
-	| NULL																							# null
 	| '(' expr ')'																			# parens
 	| expr op = ('*' | '/' | '%') expr									# MulDivMod
 	| expr op = ('+' | '-') expr												# AddSub
@@ -63,6 +60,9 @@ expr:
 	| IDENTIFIER																				# variableReference
 	| VAR IDENTIFIER '=' expr														# variableDeclaration
 	| IDENTIFIER '=' expr																# assignmentStatement
+	| INT																								# int
+	| BOOL																							# boolean
+	| NULL																							# null
 	;
 
 arglist:	expr (',' expr)*;

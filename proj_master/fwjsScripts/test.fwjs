@@ -9,3 +9,4 @@ print(z); // Prints 7
 var x = null;
 print(x);
 
+var foo = f(x + y, 5* 6); 
