@@ -54,8 +54,8 @@ expr:
 	| expr op = ('*' | '/' | '%') expr									# MulDivMod
 	| expr op = ('+' | '-') expr												# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr		# Comparisons
-	| FUNCTION IDENTIFIER '(' idlist? ')' block # functionDeclaration
-	| FUNCTION '(' idlist? ')' block						# anonFunctionDeclation
+	| FUNCTION IDENTIFIER '(' idlist? ')' block 				# functionDeclaration
+	| FUNCTION '(' idlist? ')' block										# anonFunctionDeclation
 	| IDENTIFIER '(' arglist? ')'												# functionCall
 	| IDENTIFIER																				# variableReference
 	| VAR IDENTIFIER '=' expr														# variableDeclaration
