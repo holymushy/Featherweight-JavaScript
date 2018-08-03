@@ -6,13 +6,14 @@ import java.util.List;
 import edu.sjsu.fwjs.parser.FeatherweightJavaScriptBaseVisitor;
 import edu.sjsu.fwjs.parser.FeatherweightJavaScriptParser;
 
-public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor<Expression>{
+public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor<Expression> {
     @Override
     public Expression visitProg(FeatherweightJavaScriptParser.ProgContext ctx) {
         List<Expression> stmts = new ArrayList<Expression>();
-        for (int i=0; i<ctx.stat().size(); i++) {
+        for (int i = 0; i < ctx.stat().size(); i++) {
             Expression exp = visit(ctx.stat(i));
-            if (exp != null) stmts.add(exp);
+            if (exp != null)
+                stmts.add(exp);
         }
         return listToSeqExp(stmts);
     }
@@ -38,9 +39,33 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     }
 
     @Override
+    public Expression visitWhile(FeatherweightJavaScriptParser.WhileContext ctx) {
+        Expression cond = visit(ctx.expr());
+        Expression keepDoing = visit(ctx.block());
+        return new WhileExpr(cond, keepDoing);
+    }
+
+    @Override
+    public Expression visitPrint(FeatherweightJavaScriptParser.PrintContext ctx) {
+        Expression val = visit(ctx.expr());
+        System.out.println(val);
+        return new ValueExpr(val);
+    }
+
+    @Override
     public Expression visitInt(FeatherweightJavaScriptParser.IntContext ctx) {
         int val = Integer.valueOf(ctx.INT().getText());
         return new ValueExpr(new IntVal(val));
+    }
+
+    public Expression visitBoolean(FeatherweightJavaScriptParser.BooleanContext ctx) {
+        Boolean bol = Boolean.valueOf(ctx.BOOLEAN().getText());
+        return new ValueExpr(new BoolVal(bol));
+    }
+
+    public Expression visitNull(FeatherweightJavaScriptParser.NullContext ctx) {
+        Null nul = Boolean.valueOf(ctx.NULL().getText());
+        return new ValueExpr(new NullVal(nul));
     }
 
     @Override
@@ -51,7 +76,7 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     @Override
     public Expression visitFullBlock(FeatherweightJavaScriptParser.FullBlockContext ctx) {
         List<Expression> stmts = new ArrayList<Expression>();
-        for (int i=1; i<ctx.getChildCount()-1; i++) {
+        for (int i = 1; i < ctx.getChildCount() - 1; i++) {
             Expression exp = visit(ctx.getChild(i));
             stmts.add(exp);
         }
@@ -59,13 +84,14 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     }
 
     /**
-     * Converts a list of expressions to one sequence expression,
-     * if the list contained more than one expression.
+     * Converts a list of expressions to one sequence expression, if the list
+     * contained more than one expression.
      */
     private Expression listToSeqExp(List<Expression> stmts) {
-        if (stmts.isEmpty()) return null;
+        if (stmts.isEmpty())
+            return null;
         Expression exp = stmts.get(0);
-        for (int i=1; i<stmts.size(); i++) {
+        for (int i = 1; i < stmts.size(); i++) {
             exp = new SeqExpr(exp, stmts.get(i));
         }
         return exp;
@@ -73,6 +99,29 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 
     @Override
     public Expression visitSimpBlock(FeatherweightJavaScriptParser.SimpBlockContext ctx) {
+        return visit(ctx.stat());
+    }
+
+    @Override
+    public Expression visitVariableReference(FeatherweightJavaScriptParser.VariableReferenceContext ctx) {
+        return visit(ctx.stat());
+    }
+
+    public Expression visitVariableDeclaration(FeatherweightJavaScriptParser.VariableDeclarationContext ctx) {
+        return visit(ctx.stat());
+    }
+
+    public Expression visitAssignmentStatement(FeatherweightJavaScriptParser.AssignmentStatementContext ctx) {
+        Map<String, Integer> map = new HashMap<String, Integer>();
+        // Get the text of your ID
+        String id = ctx.ID().getText();
+        // Get the value of the sub-expression
+        int value = visit(ctx.expr());
+        map.put(id, value);
+        return visit(ctx.stat());
+    }
+
+    public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
         return visit(ctx.stat());
     }
 }
