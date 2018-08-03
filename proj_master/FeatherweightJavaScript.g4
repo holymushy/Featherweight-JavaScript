@@ -41,31 +41,29 @@ WS: [ \t]+ -> skip; // ignore whitespace
 prog: stat+;
 
 stat:
-	expr SEPARATOR											# bareExpr
-	| IF '(' expr ')' block ELSE block 	# ifThenElse
-	| IF '(' expr ')' block 						# ifThen
-	| WHILE '(' expr ')' block					# while
-	| PRINT '(' expr ')' SEPARATOR			# print
-	| SEPARATOR													# blankExpr
-	;
+	expr SEPARATOR						# bareExpr
+	| IF '(' expr ')' block ELSE block	# ifThenElse
+	| IF '(' expr ')' block				# ifThen
+	| WHILE '(' expr ')' block			# while
+	| PRINT '(' expr ')' SEPARATOR		# print
+	| SEPARATOR							# blankExpr;
 
 expr:
-	| '(' expr ')'																			# parens
-	| expr op = ('*' | '/' | '%') expr									# MulDivMod
-	| expr op = ('+' | '-') expr												# AddSub
-	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr		# Comparisons
-	| FUNCTION IDENTIFIER '(' idlist? ')' block 				# functionDeclaration
-	| FUNCTION '(' idlist? ')' block										# anonFunctionDeclation
-	| IDENTIFIER '(' arglist? ')'												# functionCall
-	| IDENTIFIER																				# variableReference
-	| VAR IDENTIFIER '=' expr														# variableDeclaration
-	| IDENTIFIER '=' expr																# assignmentStatement
-	| INT																								# int
-	| BOOL																							# boolean
-	| NULL																							# null
-	;
+	 '(' expr ')'										# parens
+	| expr op = ('*' | '/' | '%') expr					# MulDivMod
+	| expr op = ('+' | '-') expr						# AddSub
+	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons
+	| FUNCTION IDENTIFIER '(' idlist? ')' block			# functionDeclaration
+	| FUNCTION '(' idlist? ')' block					# anonFunctionDeclation
+	| IDENTIFIER '(' arglist? ')'						# functionCall
+	| IDENTIFIER										# variableReference
+	| VAR IDENTIFIER '=' expr							# variableDeclaration
+	| IDENTIFIER '=' expr								# assignmentStatement
+	| INT												# int
+	| BOOL												# boolean
+	| NULL												# null;
 
-arglist:	expr (',' expr)*;
+arglist: expr (',' expr)*;
 
 idlist: IDENTIFIER (',' IDENTIFIER)*;
 
