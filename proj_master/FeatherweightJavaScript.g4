@@ -49,7 +49,7 @@ stat:
 	| SEPARATOR							# blankExpr;
 
 expr:
-	 '(' expr ')'										# parens
+	| '(' expr ')'										# parens
 	| expr op = ('*' | '/' | '%') expr					# MulDivMod
 	| expr op = ('+' | '-') expr						# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons

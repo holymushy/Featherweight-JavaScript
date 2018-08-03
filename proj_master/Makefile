@@ -1,7 +1,7 @@
 # Update these variables to match the locations
 JUNIT_JAR=lib/junit-4.12.jar
 HAMCREST_JAR=lib/hamcrest-core-1.3.jar
-ANTLR_JAR=lib/antlr-4.7.1-complete.jar
+ANTLR_JAR=lib/antlr-4.4-complete.jar
 
 # These variables should not need to be changed
 GRAMMAR_NAME=FeatherweightJavaScript
@@ -30,21 +30,17 @@ generate: ${GRAMMAR}
 	mkdir -p ${GEN_SRC_DIR}
 	java -jar ${ANTLR_JAR} -no-listener -visitor ${GRAMMAR} -o ${GEN_SRC_DIR}
 
-antlr:
-	mkdir -p ${GEN_SRC_DIR}
-	java -jar ${ANTLR_JAR} -no-listener -visitor -o ${GEN_SRC_DIR} ./${GRAMMAR}
-	javac -d ./bin/ ./${GEN_SRC_DIR}/${GRAMMAR_NAME}*.java
-
 parse:
 	mkdir -p ${TREES_DIR}
 	$(foreach script, ${SCRIPTS}, java -cp ${BUILD_DIR}:${ANTLR_JAR} org.antlr.v4.runtime.misc.TestRig \
-		${PARSER_PACKAGE_NAME}.${GRAMMAR_NAME} prog -tree ${FWJS_SCRIPT_DIR}/${script} > ${TREES_DIR}/${script}.tree;)
+		${PARSER_PACKAGE_NAME}.${GRAMMAR_NAME} prog -gui ${FWJS_SCRIPT_DIR}/${script} > ${TREES_DIR}/${script}.tree;)
 
 test:
 	java -cp ${BUILD_DIR}:${TEST_CLASSPATH} org.junit.runner.JUnitCore ${PACKAGE_NAME}.ExpressionTest
 
 run:
-	java -cp ${BUILD_DIR} ${PACKAGE_NAME}.Interpreter
+	$(foreach script, ${SCRIPTS}, echo "Running ${FWJS_SCRIPT_DIR}/${script}"; \
+		java -cp ${BUILD_DIR}:${ANTLR_JAR} ${PACKAGE_NAME}.Interpreter ${FWJS_SCRIPT_DIR}/${script};)
 
 ${ZIP_FILE}:
 	zip ${ZIP_FILE} src/${SRC_FOLDERS}/*.java ${GRAMMAR}
@@ -56,5 +52,4 @@ spotless: clean
 	-rm ${ZIP_FILE}
 	-rm -r ${GEN_SRC_BASE_DIR}
 	-rm -r ${TREES_DIR}
-
 
