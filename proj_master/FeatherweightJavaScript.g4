@@ -49,13 +49,13 @@ stat:
 	| SEPARATOR							# blankExpr;
 
 expr:
-	| '(' expr ')'										# parens
+	'(' expr ')'										# parens
 	| expr op = ('*' | '/' | '%') expr					# MulDivMod
 	| expr op = ('+' | '-') expr						# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons
 	| FUNCTION IDENTIFIER '(' idlist? ')' block			# functionDeclaration
 	| FUNCTION '(' idlist? ')' block					# anonFunctionDeclation
-	| IDENTIFIER '(' arglist? ')'						# functionCall
+	| expr '(' arglist? ')'						# functionCall
 	| IDENTIFIER										# variableReference
 	| VAR IDENTIFIER '=' expr							# variableDeclaration
 	| IDENTIFIER '=' expr								# assignmentStatement

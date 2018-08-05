@@ -104,24 +104,18 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 
     @Override
     public Expression visitVariableReference(FeatherweightJavaScriptParser.VariableReferenceContext ctx) {
-        return visit(ctx.stat());
+        return VarExpr(ctx.IDENTIFIER().getSymbol().getText());
     }
 
     public Expression visitVariableDeclaration(FeatherweightJavaScriptParser.VariableDeclarationContext ctx) {
-        return visit(ctx.stat());
+        return VarDeclExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
     }
 
     public Expression visitAssignmentStatement(FeatherweightJavaScriptParser.AssignmentStatementContext ctx) {
-        Map<String, Integer> map = new HashMap<String, Integer>();
-        // Get the text of your ID
-        String id = ctx.ID().getText();
-        // Get the value of the sub-expression
-        int value = visit(ctx.expr());
-        map.put(id, value);
-        return visit(ctx.stat());
+        return AssignExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
     }
 
     public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
-        return visit(ctx.stat());
+        return FunctionAppExpr(ctx.expr(0), visit(ctx.arglist()));
     }
 }
