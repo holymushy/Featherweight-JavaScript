@@ -122,4 +122,64 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     public List<Expression> visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx) {
         return ctx.expr().stream().map(visit).collect(Collectors.toList());
     }
+	@Override
+	public Expresion visitMulDivMod(ExprParser.MulDivModContext ctx) {
+		Expresion left = visit(ctx.expr(0));
+		Expresion right = visit(ctx.expr(1));
+		int op = ctx.op.getType();
+		if (op == ExprParser.MULTIPLY)
+			return BinOpExpr(Op.MULTIPLY,left, right);
+		else if (op == ExprParser.MOD)
+			return BinOpExpr(Op.MOD,left, right);
+		else
+			return BinOpExpr(Op.DIVIDE,left, right);
+	}
+	@Override
+	public Expresion visitComparisons(ExprParser.ComparisonsContext ctx) {
+		Expresion left = visit(ctx.expr(0));
+		Expresion right = visit(ctx.expr(1));
+		int op = ctx.op.getType();
+		if (op == ExprParser.GT)
+			return BinOpExpr(Op.GT,left, right);
+		else if (ctx.op.getType() == ExprParser.GE)
+			return BinOpExpr(Op.GE,left, right);
+		else if (op == ExprParser.LT)
+			return BinOpExpr(Op.LT,left, right);
+		else if (op == ExprParser.LE)
+			return BinOpExpr(Op.LE,left, right);
+		else 
+			return BinOpExpr(Op.EQ,left, right);
+	}
+	@Override
+	public Expresion visitAddSub(ExprParser.AddSubContext ctx) {
+		Expresion left = visit(ctx.expr(0));
+		Expresion right = visit(ctx.expr(1));
+		int op = ctx.op.getType();
+		if (op == ExprParser.ADD)
+			return BinOpExpr(Op.ADD,left, right);
+		else
+			return BinOpExpr(Op.SUBTRACT,left, right);
+	}
+	@Override
+	public Expresion visitAnonFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
+		List<Expression> stmts = ctx.idlists?;
+		List<String> params = new ArrayList<String>();
+		for(Expression e : stmts){
+			params.add(e.getToken().getText());
+		}
+		Expresion body = visit(ctx.block);
+		return FunctionDeclExpr(params,body);
+	}
+	@Override
+	public Expresion visitFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
+		String name = ctx.getSymbol().getText();
+		List<Expression> stmts = ctx.idlists?;
+		List<String> params = new ArrayList<String>();
+		for(Expression e : stmts){
+			params.add(e.getSymbol().getText());
+		}
+		Expresion body = visit(ctx.block);
+		return FunctionDeclExpr(name,params,body);
+	}
+
 }
