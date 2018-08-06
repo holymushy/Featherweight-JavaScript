@@ -215,6 +215,21 @@ class AssignExpr implements Expression {
 /**
  * A function declaration, which evaluates to a closure.
  */
+class AnonFunctionDeclExpr implements Expression {
+	private List<String> params;
+	private Expression body;
+	public FunctionDeclExpr(List<String> params, Expression body) {
+		this.params = params;
+		this.body = body;
+	}
+	public Value evaluate(Environment env) {
+		return new ClosureVal(params, body, env);
+	}
+}
+
+/**
+ * A function declaration, which evaluates to a closure.
+ */
 class FunctionDeclExpr implements Expression {
 	private List<String> params;
 	private Expression body;
@@ -226,6 +241,7 @@ class FunctionDeclExpr implements Expression {
 		return new ClosureVal(params, body, env);
 	}
 }
+
 
 /**
  * Function application.
