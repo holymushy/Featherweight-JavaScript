@@ -156,5 +156,26 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		else
 			return BinOpExpr(Op.SUBTRACT,left, right);
 	}
+	@Override
+	public Expresion visitAnonFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
+		List<Expression> stmts = ctx.idlists?;
+		List<String> params = new ArrayList<String>();
+		for(Expression e : stmts){
+			params.add(e.getToken().getText());
+		}
+		Expresion body = visit(ctx.block);
+		return FunctionDeclExpr(params,body);
+	}
+	@Override
+	public Expresion visitFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
+		String name = ctx.getSymbol().getText();
+		List<Expression> stmts = ctx.idlists?;
+		List<String> params = new ArrayList<String>();
+		for(Expression e : stmts){
+			params.add(e.getSymbol().getText());
+		}
+		Expresion body = visit(ctx.block);
+		return FunctionDeclExpr(name,params,body);
+	}
 
 }
