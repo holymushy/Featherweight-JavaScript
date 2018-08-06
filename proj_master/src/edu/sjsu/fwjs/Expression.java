@@ -231,9 +231,11 @@ class AnonFunctionDeclExpr implements Expression {
  * A function declaration, which evaluates to a closure.
  */
 class FunctionDeclExpr implements Expression {
+	private String name;
 	private List<String> params;
 	private Expression body;
-	public FunctionDeclExpr(List<String> params, Expression body) {
+	public FunctionDeclExpr(String name, List<String> params, Expression body) {
+		this.name = name;
 		this.params = params;
 		this.body = body;
 	}
