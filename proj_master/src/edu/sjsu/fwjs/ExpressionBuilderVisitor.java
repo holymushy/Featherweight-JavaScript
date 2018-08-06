@@ -118,4 +118,8 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
         return FunctionAppExpr(ctx.expr(0), visit(ctx.arglist()));
     }
+
+    public List<Expression> visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx) {
+        return ctx.expr().stream().map(visit).collect(Collectors.toList());
+    }
 }
