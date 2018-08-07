@@ -270,8 +270,12 @@ class FunctionDeclExpr implements Expression {
 		this.body = body;
 	}
 	public Value evaluate(Environment env) {
+<<<<<<< HEAD
 		// function foo(){...} should be syntactic sugar for var foo = function(){...}
 		return (new VarDeclExpr(this.name, new ValueExpr(new ClosureVal(params, body, env)))).evaluate(env);
+=======
+		return new ClosureVal(name, params, body, env);
+>>>>>>> d96b4044332db732615d4a1f69b6f0e7a0fc4144
 	}
 }
 
