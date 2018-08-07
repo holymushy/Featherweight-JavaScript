@@ -118,7 +118,7 @@ public class ExpressionTest {
         Environment env = new Environment();
         List<String> params = new ArrayList<String>();
         params.add("x");
-        FunctionDeclExpr f = new FunctionDeclExpr(params, new VarExpr("x"));
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(params, new VarExpr("x"));
         List<Expression> args = new ArrayList<Expression>();
         args.add(new ValueExpr(new IntVal(321)));
         FunctionAppExpr app = new FunctionAppExpr(f,args);
@@ -132,7 +132,7 @@ public class ExpressionTest {
         List<String> params = new ArrayList<String>();
         params.add("x");
         params.add("y");
-        FunctionDeclExpr f = new FunctionDeclExpr(params,
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(params,
                 new BinOpExpr(Op.DIVIDE,
                         new VarExpr("x"),
                         new VarExpr("y")));
@@ -148,7 +148,7 @@ public class ExpressionTest {
     public void testOuterScope() {
         Environment env = new Environment();
         VarDeclExpr newVar = new VarDeclExpr("x", new ValueExpr(new IntVal(112358)));
-        FunctionDeclExpr f = new FunctionDeclExpr(new ArrayList<String>(),
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(new ArrayList<String>(),
                 new VarExpr("x"));
         SeqExpr seq = new SeqExpr(newVar, new FunctionAppExpr(f, new ArrayList<Expression>()));
         Value v = seq.evaluate(env);
@@ -160,7 +160,7 @@ public class ExpressionTest {
     public void testScope() {
         Environment env = new Environment();
         VarDeclExpr newVar = new VarDeclExpr("x", new ValueExpr(new IntVal(112358)));
-        FunctionDeclExpr f = new FunctionDeclExpr(new ArrayList<String>(),
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(new ArrayList<String>(),
                 new SeqExpr(new VarDeclExpr("x", new ValueExpr(new IntVal(42))),
                         new VarExpr("x")));
         SeqExpr seq = new SeqExpr(newVar, new FunctionAppExpr(f, new ArrayList<Expression>()));
@@ -173,7 +173,7 @@ public class ExpressionTest {
     public void testScope2() {
         Environment env = new Environment();
         VarDeclExpr newVar = new VarDeclExpr("x", new ValueExpr(new IntVal(112358)));
-        FunctionDeclExpr f = new FunctionDeclExpr(new ArrayList<String>(),
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(new ArrayList<String>(),
                 new SeqExpr(new VarDeclExpr("x", new ValueExpr(new IntVal(42))),
                         new VarExpr("x")));
         SeqExpr seq = new SeqExpr(new SeqExpr(newVar,
@@ -188,7 +188,7 @@ public class ExpressionTest {
     public void testScope3() {
         Environment env = new Environment();
         VarDeclExpr newVar = new VarDeclExpr("x", new ValueExpr(new IntVal(112358)));
-        FunctionDeclExpr f = new FunctionDeclExpr(new ArrayList<String>(),
+        AnonFunctionDeclExpr f = new AnonFunctionDeclExpr(new ArrayList<String>(),
                 new SeqExpr(new AssignExpr("x", new ValueExpr(new IntVal(42))),
                         new VarExpr("x")));
         SeqExpr seq = new SeqExpr(new SeqExpr(newVar,

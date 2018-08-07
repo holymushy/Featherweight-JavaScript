@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.tree.*;
+
 import edu.sjsu.fwjs.parser.FeatherweightJavaScriptBaseVisitor;
 import edu.sjsu.fwjs.parser.FeatherweightJavaScriptParser;
 
@@ -107,7 +109,6 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     }
 
     public Expression visitVariableDeclaration(FeatherweightJavaScriptParser.VariableDeclarationContext ctx) {
-<<<<<<< HEAD
         return new VarDeclExpr(ctx.IDENTIFIER().getSymbol().getText(), visit(ctx.expr()));
     }
 
@@ -120,17 +121,6 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
                                    ctx.arglist().expr()
                                    .stream().map(x -> visit(x)).collect(Collectors.toList())
                                   );
-=======
-        return new VarDeclExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
-    }
-
-    public Expression visitAssignmentStatement(FeatherweightJavaScriptParser.AssignmentStatementContext ctx) {
-        return new AssignExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
-    }
-
-    public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
-        return new FunctionAppExpr(ctx.expr(0), visit(ctx.arglist()));
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
     }
 
     public Expression visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx) {
@@ -142,15 +132,9 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expression left = visit(ctx.expr(0));
 		Expression right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
-<<<<<<< HEAD
-		if (op == FeatherweightJavaScriptParser.MULTIPLY)
+		if (op == FeatherweightJavaScriptParser.MUL)
 			return new BinOpExpr(Op.MULTIPLY,left, right);
 		else if (op == FeatherweightJavaScriptParser.MOD)
-=======
-		if (op == ExprParser.MULTIPLY)
-			return new BinOpExpr(Op.MULTIPLY,left, right);
-		else if (op == ExprParser.MOD)
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
 			return new BinOpExpr(Op.MOD,left, right);
 		else
 			return new BinOpExpr(Op.DIVIDE,left, right);
@@ -160,23 +144,13 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expression left = visit(ctx.expr(0));
 		Expression right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
-<<<<<<< HEAD
 		if (op == FeatherweightJavaScriptParser.GT)
 			return new BinOpExpr(Op.GT,left, right);
-		else if (ctx.op.getType() == FeatherweightJavaScriptParser.GE)
+		else if (op == FeatherweightJavaScriptParser.GE)
 			return new BinOpExpr(Op.GE,left, right);
 		else if (op == FeatherweightJavaScriptParser.LT)
 			return new BinOpExpr(Op.LT,left, right);
 		else if (op == FeatherweightJavaScriptParser.LE)
-=======
-		if (op == ExprParser.GT)
-			return new BinOpExpr(Op.GT,left, right);
-		else if (ctx.op.getType() == ExprParser.GE)
-			return new BinOpExpr(Op.GE,left, right);
-		else if (op == ExprParser.LT)
-			return new BinOpExpr(Op.LT,left, right);
-		else if (op == ExprParser.LE)
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
 			return new BinOpExpr(Op.LE,left, right);
 		else 
 			return new BinOpExpr(Op.EQ,left, right);
@@ -186,43 +160,30 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expression left = visit(ctx.expr(0));
 		Expression right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
-<<<<<<< HEAD
-		if (op == FeatherweightJavaScriptParser.ADD)
-=======
-		if (op == ExprParser.ADD)
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
+		if (op == FeatherweightJavaScriptParser.PLUS)
 			return new BinOpExpr(Op.ADD,left, right);
 		else
 			return new BinOpExpr(Op.SUBTRACT,left, right);
 	}
 	@Override
-	public Expression visitAnonFunctionDeclaration(FeatherweightJavaScriptParser.FunctionDeclarationContext ctx) {
-		List<Expression> stmts = ctx.idlists;
+	public Expression visitAnonFunctionDeclaration(FeatherweightJavaScriptParser.AnonFunctionDeclarationContext ctx) {
+		List<TerminalNode> tnodes = ctx.idlist().IDENTIFIER();
 		List<String> params = new ArrayList<String>();
-		for(Expression e : stmts){
-			params.add(e.getToken().getText());
+		for(TerminalNode tn : tnodes){
+			params.add(tn.getSymbol().getText());
 		}
-<<<<<<< HEAD
-		Expression body = visit(ctx.block);
+		Expression body = visit(ctx.block());
 		return new AnonFunctionDeclExpr(params,body);
-=======
-		Expresion body = visit(ctx.block);
-		return new FunctionDeclExpr(params,body);
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
 	}
 	@Override
 	public Expression visitFunctionDeclaration(FeatherweightJavaScriptParser.FunctionDeclarationContext ctx) {
-		String name = ctx.getSymbol().getText();
-		List<Expression> stmts = ctx.idlists;
+		String name = ctx.IDENTIFIER().getSymbol().getText();
+		List<TerminalNode> tnodes = ctx.idlist().IDENTIFIER();
 		List<String> params = new ArrayList<String>();
-		for(Expression e : stmts){
-			params.add(e.getSymbol().getText());
+		for(TerminalNode tn : tnodes){
+			params.add(tn.getSymbol().getText());
 		}
-<<<<<<< HEAD
-		Expression body = visit(ctx.block);
-=======
-		Expresion body = visit(ctx.block);
->>>>>>> 5d1bab785664ec6629fa9291202ea8bd79d6f5db
+		Expression body = visit(ctx.block());
 		return new FunctionDeclExpr(name,params,body);
 	}
 

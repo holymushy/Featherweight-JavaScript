@@ -73,6 +73,13 @@ public interface FeatherweightJavaScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitAddSub(FeatherweightJavaScriptParser.AddSubContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code anonFunctionDeclaration}
+	 * labeled alternative in {@link FeatherweightJavaScriptParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAnonFunctionDeclaration(FeatherweightJavaScriptParser.AnonFunctionDeclarationContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code assignmentStatement}
 	 * labeled alternative in {@link FeatherweightJavaScriptParser#expr}.
 	 * @param ctx the parse tree
@@ -121,13 +128,6 @@ public interface FeatherweightJavaScriptVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNull(FeatherweightJavaScriptParser.NullContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code anonFunctionDeclation}
-	 * labeled alternative in {@link FeatherweightJavaScriptParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAnonFunctionDeclation(FeatherweightJavaScriptParser.AnonFunctionDeclationContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Comparisons}
 	 * labeled alternative in {@link FeatherweightJavaScriptParser#expr}.

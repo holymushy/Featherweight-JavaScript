@@ -378,6 +378,21 @@ public class FeatherweightJavaScriptParser extends Parser {
 			else return visitor.visitChildren(this);
 		}
 	}
+	public static class AnonFunctionDeclarationContext extends ExprContext {
+		public TerminalNode FUNCTION() { return getToken(FeatherweightJavaScriptParser.FUNCTION, 0); }
+		public BlockContext block() {
+			return getRuleContext(BlockContext.class,0);
+		}
+		public IdlistContext idlist() {
+			return getRuleContext(IdlistContext.class,0);
+		}
+		public AnonFunctionDeclarationContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof FeatherweightJavaScriptVisitor ) return ((FeatherweightJavaScriptVisitor<? extends T>)visitor).visitAnonFunctionDeclaration(this);
+			else return visitor.visitChildren(this);
+		}
+	}
 	public static class AssignmentStatementContext extends ExprContext {
 		public TerminalNode IDENTIFIER() { return getToken(FeatherweightJavaScriptParser.IDENTIFIER, 0); }
 		public ExprContext expr() {
@@ -451,21 +466,6 @@ public class FeatherweightJavaScriptParser extends Parser {
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
 			if ( visitor instanceof FeatherweightJavaScriptVisitor ) return ((FeatherweightJavaScriptVisitor<? extends T>)visitor).visitNull(this);
-			else return visitor.visitChildren(this);
-		}
-	}
-	public static class AnonFunctionDeclationContext extends ExprContext {
-		public TerminalNode FUNCTION() { return getToken(FeatherweightJavaScriptParser.FUNCTION, 0); }
-		public BlockContext block() {
-			return getRuleContext(BlockContext.class,0);
-		}
-		public IdlistContext idlist() {
-			return getRuleContext(IdlistContext.class,0);
-		}
-		public AnonFunctionDeclationContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof FeatherweightJavaScriptVisitor ) return ((FeatherweightJavaScriptVisitor<? extends T>)visitor).visitAnonFunctionDeclation(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -577,7 +577,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 				break;
 			case 3:
 				{
-				_localctx = new AnonFunctionDeclationContext(_localctx);
+				_localctx = new AnonFunctionDeclarationContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(62);

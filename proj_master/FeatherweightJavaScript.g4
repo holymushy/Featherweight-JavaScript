@@ -54,7 +54,7 @@ expr:
 	| expr op = ('+' | '-') expr						# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons
 	| FUNCTION IDENTIFIER '(' idlist? ')' block			# functionDeclaration
-	| FUNCTION '(' idlist? ')' block					# anonFunctionDeclation
+	| FUNCTION '(' idlist? ')' block					# anonFunctionDeclaration
 	| expr '(' arglist? ')'						# functionCall
 	| IDENTIFIER										# variableReference
 	| VAR IDENTIFIER '=' expr							# variableDeclaration
