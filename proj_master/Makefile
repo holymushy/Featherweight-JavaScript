@@ -32,8 +32,8 @@ generate: ${GRAMMAR}
 
 parse:
 	mkdir -p ${TREES_DIR}
-	$(foreach script, ${SCRIPTS}, java -cp ${BUILD_DIR}:${ANTLR_JAR} org.antlr.v4.runtime.misc.TestRig \
-		${PARSER_PACKAGE_NAME}.${GRAMMAR_NAME} prog -gui ${FWJS_SCRIPT_DIR}/${script} > ${TREES_DIR}/${script}.tree;)
+	$(foreach script, ${SCRIPTS}, java -cp ${BUILD_DIR}:${ANTLR_JAR} org.antlr.v4.gui.TestRig \
+		bin.${PARSER_PACKAGE_NAME}.${GRAMMAR_NAME} prog -gui ${FWJS_SCRIPT_DIR}/${script} > ${TREES_DIR}/${script}.tree;)
 
 test:
 	java -cp ${BUILD_DIR}:${TEST_CLASSPATH} org.junit.runner.JUnitCore ${PACKAGE_NAME}.ExpressionTest

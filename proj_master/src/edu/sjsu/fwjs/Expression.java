@@ -218,7 +218,7 @@ class AssignExpr implements Expression {
 class AnonFunctionDeclExpr implements Expression {
 	private List<String> params;
 	private Expression body;
-	public FunctionDeclExpr(List<String> params, Expression body) {
+	public AnonFunctionDeclExpr(List<String> params, Expression body) {
 		this.params = params;
 		this.body = body;
 	}
