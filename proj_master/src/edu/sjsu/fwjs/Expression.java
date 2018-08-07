@@ -78,8 +78,7 @@ class BinOpExpr implements Expression {
 		List<Value> vs = this.exprs.stream().map(x -> x.evaluate(env)).collect(Collectors.toList());
 		Boolean nullFlag = vs.stream().anyMatch(x -> (x == null));
 		Boolean closureFlag = vs.stream().anyMatch(x -> (x instanceof ClosureVal));
-		//System.out.println("vs 0 " + vs.get(0));
-		//System.out.println("vs 1 " + vs.get(1));
+
 		//Javascript-ish implicit type conversion
 		List<Integer> vals = vs.stream().map(
 			x -> {
@@ -94,22 +93,19 @@ class BinOpExpr implements Expression {
 		).collect(Collectors.toList());
 		int x = vals.get(0);
 		int y = vals.get(1);
-		//System.out.println("x: " + x);
-		//System.out.println(y);
+
+		if (nullFlag || closureFlag){
+			if (op.equals(Op.EQ)) {
+				return new BoolVal(vs.get(0).equals(vs.get(1)));
+			}
+			else if (!nullFlag)
+				throw new RuntimeException("Tried to perform arithmetic or numeric comparison with a closure.");
+		}
 		if(op.equals(Op.ADD)) {
 			return new IntVal(x + y);
 		}else if(op.equals(Op.DIVIDE)) {
 			return new IntVal(x / y);
 		}else if(op.equals(Op.EQ)) {
-			if (nullFlag || closureFlag){
-				System.out.println("null or closure");
-				System.out.println(vs.get(0));
-				System.out.println(vs.get(1));
-				System.out.println(vs.get(0).equals(vs.get(1)));
-				System.out.println("return");
-				return new BoolVal(vs.get(0).equals(vs.get(1)));
-			}
-			else
 				return new BoolVal(x == y);
 		}else if(op.equals(Op.GE)) {
 			return new BoolVal(x >= y);
@@ -210,8 +206,10 @@ class VarDeclExpr implements Expression {
 		this.exp = exp;
 	}
 	public Value evaluate(Environment env) {
-		if(exp == null) return new NullVal();		
 		Value v = new NullVal();
+		if(exp == null) {
+			env.createVar(varName, v);
+		}	
 		try {
 			v = exp.evaluate(env);
 		}catch(RuntimeException e) {
@@ -296,7 +294,8 @@ class FunctionAppExpr implements Expression {
         } catch (ClassCastException e) {
             throw new RuntimeException("The expression, \"" + this.f.toString() + "\", did not evaluate to a closure.");
         }
-        
+				//System.out.println("func result: " + func.apply(argvals));
+				//System.out.println(env.env.toString());
         return func.apply(argvals);
     }
 }

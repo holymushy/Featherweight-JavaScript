@@ -41,27 +41,27 @@ WS: [ \t]+ -> skip; // ignore whitespace
 prog: stat+;
 
 stat:
-	expr SEPARATOR						# bareExpr
+	expr SEPARATOR											# bareExpr
 	| IF '(' expr ')' block ELSE block	# ifThenElse
-	| IF '(' expr ')' block				# ifThen
-	| WHILE '(' expr ')' block			# while
-	| PRINT '(' expr ')' SEPARATOR		# print
-	| SEPARATOR							# blankExpr;
+	| IF '(' expr ')' block							# ifThen
+	| WHILE '(' expr ')' block					# while
+	| PRINT '(' expr ')' SEPARATOR			# print
+	| SEPARATOR													# blankExpr;
 
 expr:
-	'(' expr ')'										# parens
-	| expr op = ('*' | '/' | '%') expr					# MulDivMod
-	| expr op = ('+' | '-') expr						# AddSub
+	'(' expr ')'																			# parens
+	| expr '(' arglist? ')'														# functionCall
+	| expr op = ('*' | '/' | '%') expr								# MulDivMod
+	| expr op = ('+' | '-') expr											# AddSub
 	| expr op = ('<' | '<=' | '>' | '>=' | '==') expr	# Comparisons
-	| FUNCTION IDENTIFIER '(' idlist? ')' block			# functionDeclaration
-	| FUNCTION '(' idlist? ')' block					# anonFunctionDeclaration
-	| expr '(' arglist? ')'						# functionCall
-	| IDENTIFIER										# variableReference
-	| VAR IDENTIFIER '=' expr							# variableDeclaration
-	| IDENTIFIER '=' expr								# assignmentStatement
-	| INT												# int
-	| BOOL												# boolean
-	| NULL												# null;
+	| FUNCTION IDENTIFIER '(' idlist? ')' block				# functionDeclaration
+	| FUNCTION '(' idlist? ')' block									# anonFunctionDeclaration
+	| IDENTIFIER																			# variableReference
+	| VAR IDENTIFIER '=' expr													# variableDeclaration
+	| IDENTIFIER '=' expr															# assignmentStatement
+	| INT																							# int
+	| BOOL																						# boolean
+	| NULL																						# null;
 
 arglist: expr (',' expr)*;
 

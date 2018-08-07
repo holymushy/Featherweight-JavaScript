@@ -682,7 +682,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 						_localctx = new MulDivModContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(82);
-						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
+						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
 						setState(83);
 						((MulDivModContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
@@ -695,7 +695,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 							consume();
 						}
 						setState(84);
-						expr(13);
+						expr(12);
 						}
 						break;
 					case 2:
@@ -703,7 +703,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 						_localctx = new AddSubContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(85);
-						if (!(precpred(_ctx, 11))) throw new FailedPredicateException(this, "precpred(_ctx, 11)");
+						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
 						setState(86);
 						((AddSubContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
@@ -716,7 +716,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 							consume();
 						}
 						setState(87);
-						expr(12);
+						expr(11);
 						}
 						break;
 					case 3:
@@ -724,7 +724,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 						_localctx = new ComparisonsContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(88);
-						if (!(precpred(_ctx, 10))) throw new FailedPredicateException(this, "precpred(_ctx, 10)");
+						if (!(precpred(_ctx, 9))) throw new FailedPredicateException(this, "precpred(_ctx, 9)");
 						setState(89);
 						((ComparisonsContext)_localctx).op = _input.LT(1);
 						_la = _input.LA(1);
@@ -737,7 +737,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 							consume();
 						}
 						setState(90);
-						expr(11);
+						expr(10);
 						}
 						break;
 					case 4:
@@ -745,7 +745,7 @@ public class FeatherweightJavaScriptParser extends Parser {
 						_localctx = new FunctionCallContext(new ExprContext(_parentctx, _parentState));
 						pushNewRecursionContext(_localctx, _startState, RULE_expr);
 						setState(91);
-						if (!(precpred(_ctx, 7))) throw new FailedPredicateException(this, "precpred(_ctx, 7)");
+						if (!(precpred(_ctx, 12))) throw new FailedPredicateException(this, "precpred(_ctx, 12)");
 						setState(92);
 						match(T__0);
 						setState(94);
@@ -1004,13 +1004,13 @@ public class FeatherweightJavaScriptParser extends Parser {
 	private boolean expr_sempred(ExprContext _localctx, int predIndex) {
 		switch (predIndex) {
 		case 0:
-			return precpred(_ctx, 12);
-		case 1:
 			return precpred(_ctx, 11);
-		case 2:
+		case 1:
 			return precpred(_ctx, 10);
+		case 2:
+			return precpred(_ctx, 9);
 		case 3:
-			return precpred(_ctx, 7);
+			return precpred(_ctx, 12);
 		}
 		return true;
 	}
@@ -1041,8 +1041,8 @@ public class FeatherweightJavaScriptParser extends Parser {
 		"FS\5\f\7\2GS\7\35\2\2HI\7\r\2\2IJ\7\35\2\2JK\7\5\2\2KS\5\6\4\7LM\7\35"+
 		"\2\2MN\7\5\2\2NS\5\6\4\6OS\7\17\2\2PS\7\20\2\2QS\7\21\2\2R\63\3\2\2\2"+
 		"R8\3\2\2\2R@\3\2\2\2RG\3\2\2\2RH\3\2\2\2RL\3\2\2\2RO\3\2\2\2RP\3\2\2\2"+
-		"RQ\3\2\2\2Se\3\2\2\2TU\f\16\2\2UV\t\2\2\2Vd\5\6\4\17WX\f\r\2\2XY\t\3\2"+
-		"\2Yd\5\6\4\16Z[\f\f\2\2[\\\t\4\2\2\\d\5\6\4\r]^\f\t\2\2^`\7\3\2\2_a\5"+
+		"RQ\3\2\2\2Se\3\2\2\2TU\f\r\2\2UV\t\2\2\2Vd\5\6\4\16WX\f\f\2\2XY\t\3\2"+
+		"\2Yd\5\6\4\rZ[\f\13\2\2[\\\t\4\2\2\\d\5\6\4\f]^\f\16\2\2^`\7\3\2\2_a\5"+
 		"\b\5\2`_\3\2\2\2`a\3\2\2\2ab\3\2\2\2bd\7\4\2\2cT\3\2\2\2cW\3\2\2\2cZ\3"+
 		"\2\2\2c]\3\2\2\2dg\3\2\2\2ec\3\2\2\2ef\3\2\2\2f\7\3\2\2\2ge\3\2\2\2hm"+
 		"\5\6\4\2ij\7\6\2\2jl\5\6\4\2ki\3\2\2\2lo\3\2\2\2mk\3\2\2\2mn\3\2\2\2n"+

@@ -2,6 +2,8 @@
  * Expected output:
 42
 666
+42
+5
 ********************/
 var x = 42;
 
@@ -17,3 +19,9 @@ var g = function() {
 
 g();
 
+var h = function(x) {
+  f();
+  print(x);
+}
+
+h(5);

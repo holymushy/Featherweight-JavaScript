@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Environment {
-	private Map<String,Value> env = new HashMap<String,Value>();
+	public Map<String,Value> env = new HashMap<String,Value>();
 	private Environment outerEnv;
 
 	/**
