@@ -104,19 +104,19 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 
     @Override
     public Expression visitVariableReference(FeatherweightJavaScriptParser.VariableReferenceContext ctx) {
-        return VarExpr(ctx.IDENTIFIER().getSymbol().getText());
+        return new VarExpr(ctx.IDENTIFIER().getSymbol().getText());
     }
 
     public Expression visitVariableDeclaration(FeatherweightJavaScriptParser.VariableDeclarationContext ctx) {
-        return VarDeclExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
+        return new VarDeclExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
     }
 
     public Expression visitAssignmentStatement(FeatherweightJavaScriptParser.AssignmentStatementContext ctx) {
-        return AssignExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
+        return new AssignExpr(ctx.IDENTIFIER().getSymbol().getText(), ctx.expr());
     }
 
     public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
-        return FunctionAppExpr(ctx.expr(0), visit(ctx.arglist()));
+        return new FunctionAppExpr(ctx.expr(0), visit(ctx.arglist()));
     }
 
     public List<Expression> visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx) {
@@ -128,11 +128,11 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expresion right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
 		if (op == ExprParser.MULTIPLY)
-			return BinOpExpr(Op.MULTIPLY,left, right);
+			return new BinOpExpr(Op.MULTIPLY,left, right);
 		else if (op == ExprParser.MOD)
-			return BinOpExpr(Op.MOD,left, right);
+			return new BinOpExpr(Op.MOD,left, right);
 		else
-			return BinOpExpr(Op.DIVIDE,left, right);
+			return new BinOpExpr(Op.DIVIDE,left, right);
 	}
 	@Override
 	public Expresion visitComparisons(ExprParser.ComparisonsContext ctx) {
@@ -140,15 +140,15 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expresion right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
 		if (op == ExprParser.GT)
-			return BinOpExpr(Op.GT,left, right);
+			return new BinOpExpr(Op.GT,left, right);
 		else if (ctx.op.getType() == ExprParser.GE)
-			return BinOpExpr(Op.GE,left, right);
+			return new BinOpExpr(Op.GE,left, right);
 		else if (op == ExprParser.LT)
-			return BinOpExpr(Op.LT,left, right);
+			return new BinOpExpr(Op.LT,left, right);
 		else if (op == ExprParser.LE)
-			return BinOpExpr(Op.LE,left, right);
+			return new BinOpExpr(Op.LE,left, right);
 		else 
-			return BinOpExpr(Op.EQ,left, right);
+			return new BinOpExpr(Op.EQ,left, right);
 	}
 	@Override
 	public Expresion visitAddSub(ExprParser.AddSubContext ctx) {
@@ -156,9 +156,9 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 		Expresion right = visit(ctx.expr(1));
 		int op = ctx.op.getType();
 		if (op == ExprParser.ADD)
-			return BinOpExpr(Op.ADD,left, right);
+			return new BinOpExpr(Op.ADD,left, right);
 		else
-			return BinOpExpr(Op.SUBTRACT,left, right);
+			return new BinOpExpr(Op.SUBTRACT,left, right);
 	}
 	@Override
 	public Expresion visitAnonFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
@@ -168,7 +168,7 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 			params.add(e.getToken().getText());
 		}
 		Expresion body = visit(ctx.block);
-		return FunctionDeclExpr(params,body);
+		return new FunctionDeclExpr(params,body);
 	}
 	@Override
 	public Expresion visitFunctionDeclaration(ExprParser.FunctionDeclarationContext ctx) {
@@ -179,7 +179,7 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 			params.add(e.getSymbol().getText());
 		}
 		Expresion body = visit(ctx.block);
-		return FunctionDeclExpr(name,params,body);
+		return new FunctionDeclExpr(name,params,body);
 	}
 
 }
