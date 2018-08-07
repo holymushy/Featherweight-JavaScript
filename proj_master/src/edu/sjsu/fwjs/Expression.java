@@ -1,7 +1,9 @@
 package edu.sjsu.fwjs;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 
 /**
@@ -63,31 +65,52 @@ class PrintExpr implements Expression {
  */
 class BinOpExpr implements Expression {
 	private Op op;
-	private Expression e1;
-	private Expression e2;
+	private List<Expression> exprs;
 	public BinOpExpr(Op op, Expression e1, Expression e2) {
 		this.op = op;
-		this.e1 = e1;
-		this.e2 = e2;
+		this.exprs = new ArrayList();
+		this.exprs.add(e1);
+		this.exprs.add(e2);
 	}
 
 	@SuppressWarnings("incomplete-switch")
 	public Value evaluate(Environment env) {
-		// YOUR CODE HERE
-		Value v1 = e1.evaluate(env), v2 = e2.evaluate(env);
-		int x, y;
-		if((new IntVal(0)).getClass().equals(v1.getClass()) && (new IntVal(0)).getClass().equals(v2.getClass())) {
-			x = ((IntVal)v1).toInt();
-			y = ((IntVal)v2).toInt();
-		}else {
-			return null;
-		}
+		List<Value> vs = this.exprs.stream().map(x -> x.evaluate(env)).collect(Collectors.toList());
+		Boolean nullFlag = vs.stream().anyMatch(x -> (x == null));
+		Boolean closureFlag = vs.stream().anyMatch(x -> (x instanceof ClosureVal));
+		//System.out.println("vs 0 " + vs.get(0));
+		//System.out.println("vs 1 " + vs.get(1));
+		//Javascript-ish implicit type conversion
+		List<Integer> vals = vs.stream().map(
+			x -> {
+				if (x instanceof BoolVal)
+					return ((BoolVal)x).toBoolean() ? 1 : 0;
+				else if (x instanceof NullVal)
+					return 0;
+				else if (x instanceof ClosureVal)
+					return -1; //Handled with closureFlag above
+				return ((IntVal)x).toInt();
+			}
+		).collect(Collectors.toList());
+		int x = vals.get(0);
+		int y = vals.get(1);
+		//System.out.println("x: " + x);
+		//System.out.println(y);
 		if(op.equals(Op.ADD)) {
 			return new IntVal(x + y);
 		}else if(op.equals(Op.DIVIDE)) {
 			return new IntVal(x / y);
 		}else if(op.equals(Op.EQ)) {
-			return new BoolVal(x == y);
+			if (nullFlag || closureFlag){
+				System.out.println("null or closure");
+				System.out.println(vs.get(0));
+				System.out.println(vs.get(1));
+				System.out.println(vs.get(0).equals(vs.get(1)));
+				System.out.println("return");
+				return new BoolVal(vs.get(0).equals(vs.get(1)));
+			}
+			else
+				return new BoolVal(x == y);
 		}else if(op.equals(Op.GE)) {
 			return new BoolVal(x >= y);
 		}else if(op.equals(Op.GT)) {
@@ -102,7 +125,7 @@ class BinOpExpr implements Expression {
 			return new IntVal(x * y);
 		}else if(op.equals(Op.SUBTRACT)) {
 			return new IntVal(x - y);
-		}else {return null;}
+		}else {return new NullVal();}
 	}
 }
 
@@ -121,9 +144,16 @@ class IfExpr implements Expression {
 	}
 	public Value evaluate(Environment env) {
 		Value v = cond.evaluate(env);
-		if(!(v instanceof BoolVal)) throw new RuntimeException("Condition is not an instance of BoolVal");
-		else if (((BoolVal)v).toBoolean()) return thn.evaluate(env);
-		else return els.evaluate(env);
+		//Javascript-ish truthiness/falsiness
+		Boolean condVal  = false;
+		if (v instanceof IntVal && ((IntVal)v).toInt() != 0)
+			condVal = true;
+		else if (v instanceof BoolVal && ((BoolVal)v).toBoolean())
+			condVal = true;
+		//else if zeroes, false, or null, false.
+		if (condVal) return thn.evaluate(env);
+		else if (this.els != null) return els.evaluate(env);
+		else return new NullVal();
 	}
 }
 
@@ -240,7 +270,8 @@ class FunctionDeclExpr implements Expression {
 		this.body = body;
 	}
 	public Value evaluate(Environment env) {
-		return new ClosureVal(params, body, env);
+		// function foo(){...} should be syntactic sugar for var foo = function(){...}
+		return (new VarDeclExpr(this.name, new ValueExpr(new ClosureVal(params, body, env)))).evaluate(env);
 	}
 }
 
@@ -256,7 +287,8 @@ class FunctionAppExpr implements Expression {
         this.args = args;
     }
     public Value evaluate(Environment env) {
-        List<Value> argvals = args.stream().map(arg -> arg.evaluate(env)).collect(Collectors.toList());
+				List<Value> argvals = args.stream().map(arg -> arg.evaluate(env)).collect(Collectors.toList());
+				//System.out.println(f);
         Value maybeFunc = f.evaluate(env);
         ClosureVal func;
         try {

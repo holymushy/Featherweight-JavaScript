@@ -32,8 +32,8 @@ public class Environment {
     		return env.get(varName);
     	}else if(outerEnv != null) {
     		return outerEnv.resolveVar(varName);
-    	}else
-    		return new NullVal();
+		}else
+			throw new RuntimeException("Variable '" + varName + "' has not been defined in this or parent scope.");
     }
 
 	/**

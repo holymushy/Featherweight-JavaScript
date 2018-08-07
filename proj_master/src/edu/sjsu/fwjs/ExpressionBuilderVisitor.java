@@ -3,6 +3,7 @@ package edu.sjsu.fwjs;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.antlr.v4.runtime.tree.*;
 
@@ -117,10 +118,11 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
     }
 
     public Expression visitFunctionCall(FeatherweightJavaScriptParser.FunctionCallContext ctx) {
-        return new FunctionAppExpr(visit(ctx.expr()), 
-                                   ctx.arglist().expr()
-                                   .stream().map(x -> visit(x)).collect(Collectors.toList())
-                                  );
+        List<Expression> args = Collections.emptyList();
+        if (ctx.arglist() != null)
+            args = ctx.arglist().expr()
+                    .stream().map(x -> visit(x)).collect(Collectors.toList());
+        return new FunctionAppExpr(visit(ctx.expr()), args);
     }
 
     public Expression visitArglist(FeatherweightJavaScriptParser.ArglistContext ctx) {
@@ -167,7 +169,11 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 	}
 	@Override
 	public Expression visitAnonFunctionDeclaration(FeatherweightJavaScriptParser.AnonFunctionDeclarationContext ctx) {
-		List<TerminalNode> tnodes = ctx.idlist().IDENTIFIER();
+        List<TerminalNode> tnodes;
+        if (ctx.idlist() != null)
+            tnodes = ctx.idlist().IDENTIFIER();
+        else
+            tnodes = Collections.emptyList();
 		List<String> params = new ArrayList<String>();
 		for(TerminalNode tn : tnodes){
 			params.add(tn.getSymbol().getText());
@@ -177,8 +183,12 @@ public class ExpressionBuilderVisitor extends FeatherweightJavaScriptBaseVisitor
 	}
 	@Override
 	public Expression visitFunctionDeclaration(FeatherweightJavaScriptParser.FunctionDeclarationContext ctx) {
-		String name = ctx.IDENTIFIER().getSymbol().getText();
-		List<TerminalNode> tnodes = ctx.idlist().IDENTIFIER();
+        String name = ctx.IDENTIFIER().getSymbol().getText();
+        List<TerminalNode> tnodes;
+        if (ctx.idlist() != null)
+            tnodes = ctx.idlist().IDENTIFIER();
+        else
+            tnodes = Collections.emptyList();
 		List<String> params = new ArrayList<String>();
 		for(TerminalNode tn : tnodes){
 			params.add(tn.getSymbol().getText());

@@ -24,17 +24,26 @@ var cons = pair;
 var head = fst;
 var tail = snd;
 
+var test = cons(10, null);
+var test2 = cons(9, test);
+
 var isEmpty = function(lst) {
   lst == null;
 };
 
+print(80000000);
+print(isEmpty(null));
+print(isEmpty(tail(test)));
+print(80000000);
+
 var nums = cons(1, cons(2, cons(3, cons(4, cons(5,
     cons(6, cons(7, cons(8, cons(9, cons(10, null))))))))));
 
-
 var sumList = function(lst) {
   if (isEmpty(lst)) 0;
-  else head(lst) + sumList(tail(lst));
+  else {
+    head(lst) + sumList(tail(lst));
+  }
 };
 
 print(sumList(nums));

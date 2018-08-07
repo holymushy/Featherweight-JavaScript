@@ -42,7 +42,7 @@ public class ExpressionTest {
                 new ValueExpr(new IntVal(1)),
                 new ValueExpr(new IntVal(2)));
         IntVal iv = (IntVal) ife.evaluate(env);
-        assertEquals(iv.toInt(), 1);
+        assertEquals(iv.toInt(), 5);
     }
     
     @Test
