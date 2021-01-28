@@ -15,6 +15,9 @@ Class
 
 Project executed on VS Code.
 
+My Contribution
+There are two main things I learn from doing this group project, acting as a project manager through teamwork(taking initiative/proactive) and willing to teach/learn (requires patience). I delagated the roles and who does what parts and meeting the deadlines. I help Grant set up his github which is essential for every programmers and Robert help us run the tests and debug much of our code.
+
 Part 1 Summary - Writing the Interpreter
 	
 	In the environment.java, environment is a map for String and Value where it serves as creating, updating, and resolving variables in their respective closures. 
