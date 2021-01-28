@@ -2,15 +2,19 @@
 a minimal version of JavaScript
 
 Team Name
+	
 	Doggy Woof Woof
 
 Created by 
+	
 	Oscar Leung 
 	Robert Maxton
 	Grant Jacobson
 Professor
+	
 	Thomas Austin
 Class
+	
 	CS 152 Programming Paradign
 
 Project executed on VS Code.
@@ -38,4 +42,3 @@ Part 3 Summary
 	
 	To test our ExpressionBuilderVisitor.java, we ran it our fwjs scripts and see it outputs correctly. 
 	
-There are two main things I learn from doing this group project, teamwork(taking initiative/proactive) and willing to teach/learn (requires patience). I delagated the roles and who does what parts and meeting the deadlines. I help one my Grant set up his github which is essential for every programmers and Robert help us run the tests and debug much of our code. 
